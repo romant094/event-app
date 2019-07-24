@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import EventService from '../../services';
+import Header from "../header";
+import Footer from "../footer";
+import WithEventService from "../hoc";
 
 class App extends Component {
     state = {
-        eventCategories: [],
-        placeCategories: []
+        eventCategories: null,
+        placeCategories: null
     };
 
     componentDidMount() {
-        const eventService = new EventService();
+        const {eventService} = this.props;
+
         eventService.getEventCategories()
             .then(eventCategories => this.setState({eventCategories}))
             .catch(error => console.log(error));
@@ -23,35 +26,43 @@ class App extends Component {
     render() {
         const {eventCategories, placeCategories} = this.state;
 
+        if (!(eventCategories && placeCategories)){
+            return <div>Loading...</div>
+        }
+
         return (
-            <div style={{display: 'flex'}}>
-                <div style={{width: '50%', padding: '0 10px'}}>
-                    <div>
-                        Категории событий
+            <div>
+                <Header />
+                <div style={{display: 'flex'}}>
+                    <div style={{width: '50%', padding: '0 10px'}}>
+                        <div>
+                            Категории событий
+                        </div>
+                        <div>
+                            <select>
+                                {
+                                    this.mapCategories(eventCategories)
+                                }
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <select>
-                            {
-                                this.mapCategories(eventCategories)
-                            }
-                        </select>
+                    <div style={{width: '50%', padding: '0 10px'}}>
+                        <div>
+                            Категории мест
+                        </div>
+                        <div>
+                            <select>
+                                {
+                                    this.mapCategories(placeCategories)
+                                }
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div style={{width: '50%', padding: '0 10px'}}>
-                    <div>
-                        Категории мест
-                    </div>
-                    <div>
-                        <select>
-                            {
-                                this.mapCategories(placeCategories)
-                            }
-                        </select>
-                    </div>
-                </div>
+                <Footer />
             </div>
         )
     }
 }
 
-export default App;
+export default WithEventService()(App);
