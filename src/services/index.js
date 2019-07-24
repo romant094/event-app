@@ -6,13 +6,21 @@ class EventService {
         return await res.json();
     };
 
-    getEvents = async () => {
-        return await this.getResourse('/event-categories/?lang=&order_by=&fields=');
+    getEventCategories = async () => {
+        return await this.getResourse('/event-categories');
     };
 
-    getPlaces = async () => {
-        return await this.getResourse('/place-categories/?lang=&order_by=&fields=');
+    getPlaceCategories = async () => {
+        return await this.getResourse('/place-categories');
+    };
+
+    getHelp = async () => {
+        return await this.getResourse('/help');
     };
 }
+
+(new EventService()).getHelp()
+    .then(res => console.log(res))
+    .catch(error => console.log(error));
 
 export default EventService;
