@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Footer = () => {
+const Spinner = () => {
     return (
         <div>
-            Footer
+            Loading...
         </div>
     );
 };
 
-export default Footer;
+export default Spinner;

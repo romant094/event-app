@@ -1,12 +1,5 @@
-import React from 'react';
-import EventService from '../../services';
+import {WithEventService} from "./with-event-service";
 
-const WithEventService = () => (Wrapped) => {
-    const eventService = new EventService();
-
-    return (props) =>{
-        return <Wrapped {...props} eventService={eventService}/>
-    }
-};
-
-export default WithEventService;
+export {
+    WithEventService
+}

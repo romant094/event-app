@@ -1,40 +1,49 @@
 import React, {Component} from 'react';
-import Header from "../header";
-import Footer from "../footer";
-import WithEventService from "../hoc";
+import {Switch, Route} from 'react-router-dom';
+import Header from "../_common/header";
+import Footer from "../_common/footer";
+import {WithEventService} from "../hoc";
+import Spinner from "../_common/spinner";
+import './app.scss';
+import {Events, Home} from "../pages";
+import Event from "../pages/event";
 
 class App extends Component {
+    eventService = this.props.eventService;
     state = {
         eventCategories: null,
-        placeCategories: null
+        placeCategories: null,
+
     };
 
     componentDidMount() {
-        const {eventService} = this.props;
 
-        eventService.getEventCategories()
-            .then(eventCategories => this.setState({eventCategories}))
-            .catch(error => console.log(error));
+        // this.eventService.getEventCategories()
+        //     .then(eventCategories => this.setState({eventCategories}))
+        //     .catch(error => console.error(error));
+        //
+        // this.eventService.getPlaceCategories()
+        //     .then(placeCategories => this.setState({placeCategories}))
+        //     .catch(error => console.error(error));
 
-        eventService.getPlaceCategories()
-            .then(placeCategories => this.setState({placeCategories}))
-            .catch(error => console.log(error));
+        console.log(this.eventService);
     }
 
     mapCategories = cat => cat.map(item => <option key={item.id} value={item.id}>{item.name}</option>);
 
-    render() {
-        const {eventCategories, placeCategories} = this.state;
+    getSomeData = () => {
+        this.eventService.getEventCategories()
+            .then(res => console.log(res))
+            .catch(error => console.error(error));
+    };
 
-        if (!(eventCategories && placeCategories)){
-            return <div>Loading...</div>
-        }
+    render() {
 
         return (
             <div>
-                <Header />
-                <div style={{display: 'flex'}}>
-                    <div style={{width: '50%', padding: '0 10px'}}>
+                <Header/>
+                {/*<div className='mb-3 row'>
+                    <div className='col-6'>
                         <div>
                             Категории событий
                         </div>
@@ -46,7 +55,7 @@ class App extends Component {
                             </select>
                         </div>
                     </div>
-                    <div style={{width: '50%', padding: '0 10px'}}>
+                    <div className='col-6'>
                         <div>
                             Категории мест
                         </div>
@@ -58,8 +67,20 @@ class App extends Component {
                             </select>
                         </div>
                     </div>
+                </div>*/}
+
+                <Switch>
+                    <Route path='/' exact render={() => <Home/>}/>
+                    <Route path='/events' exact render={() => <Events/>}/>
+                    <Route path='/events/:id' render={() => <Event/>}/>
+                </Switch>
+
+                <div className='container mb-3'>
+                    <button onClick={this.getSomeData}>
+                        getSomeData
+                    </button>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         )
     }

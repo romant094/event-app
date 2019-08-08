@@ -17,10 +17,26 @@ class EventService {
     getHelp = async () => {
         return await this.getResourse('/help');
     };
+
+    getLocations = async () => {
+        return await this.getResourse('/locations');
+    };
+
+    getEvents = async () => {
+        return await this.getResourse('/events');
+    };
+
+    getEventsOfTheDay = async () => {
+        return await this.getResourse('/events-of-the-day');
+    };
+
+    getEventsDetalization = async () => {
+        return await this.getResourse('/events-detalization');
+    };
 }
 
 (new EventService()).getHelp()
     .then(res => console.log(res))
-    .catch(error => console.log(error));
+    .catch(error => console.error(error));
 
 export default EventService;
